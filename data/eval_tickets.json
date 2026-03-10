@@ -1,0 +1,152 @@
+[
+    {
+        "id": "billing-01",
+        "ticket_text": "I was charged twice on my last invoice for order #ORD-78432. Both charges are for $29.99. Can I get a refund for the duplicate?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-02",
+        "ticket_text": "I need a copy of my invoice from last month. The format should be INV-20260215-something but I can't find it in my dashboard.",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-03",
+        "ticket_text": "I want to upgrade from Starter ($9.99/mo) to Professional ($29.99/mo). Will I get access to the new features immediately or do I have to wait until next billing cycle?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-04",
+        "ticket_text": "I cancelled my subscription 3 weeks ago but I just got charged again. I want a full refund and confirmation that no more charges will happen.",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-05",
+        "ticket_text": "The tax on my invoice seems wrong. I'm in Oregon which has no sales tax but I'm being charged 8.5%. Can you fix this?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-06",
+        "ticket_text": "My credit card was declined and I got an email about a grace period. How many retry attempts do you make before suspending my account?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-07",
+        "ticket_text": "I'm comparing annual vs monthly pricing for the Professional plan. Is $299/year really the price? That saves me about $60 compared to monthly, right?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-08",
+        "ticket_text": "I purchased a digital download last week but haven't accessed it yet. Your policy says digital downloads are non-refundable if accessed. Since I haven't opened it, can I get a refund?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-09",
+        "ticket_text": "Can you switch my payment method from Visa to ACH bank transfer? My invoices are usually over $500 so I think ACH is available for me.",
+        "expected_category": "billing"
+    },
+    {
+        "id": "billing-10",
+        "ticket_text": "I cancelled my account 25 days ago and now I want to come back. Will my data still be there if I reactivate, or has it been deleted?",
+        "expected_category": "billing"
+    },
+    {
+        "id": "technical-01",
+        "ticket_text": "My application keeps crashing with error code 0x8007 whenever I try to export a document to PDF. I've tried multiple documents and it happens every time.",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-02",
+        "ticket_text": "The app won't start at all. It just shows a blank screen and then closes. I'm on macOS 12 with 8GB RAM. Where can I find the crash logs?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-03",
+        "ticket_text": "I keep getting logged out every hour with error 0x8012. It says my authentication token expired. I shouldn't have to log in this frequently.",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-04",
+        "ticket_text": "The app has become extremely slow when I have more than 3 projects open. CPU usage spikes to 100%. Is there a way to increase the memory allocation?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-05",
+        "ticket_text": "Getting error 0x9001 database connection timeout when trying to save my work. Is there a server outage or is this on my end?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-06",
+        "ticket_text": "I'm on the Starter plan and trying to upload a 30MB file but getting error 0x9015. What's the file size limit for my plan?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-07",
+        "ticket_text": "After updating the Slack integration plugin, I'm getting error 0xA001. It says there's a plugin compatibility issue. How do I fix this?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-08",
+        "ticket_text": "I'm hitting the API rate limit constantly. I'm on the Starter plan making about 80 requests per minute. What are my options besides upgrading?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-09",
+        "ticket_text": "I edited a document on my laptop and my phone at the same time and now there's a sync conflict. How do I resolve this without losing either version?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "technical-10",
+        "ticket_text": "My account is locked after too many failed login attempts. I also lost my 2FA recovery codes. How do I get back into my account?",
+        "expected_category": "technical"
+    },
+    {
+        "id": "general-01",
+        "ticket_text": "What are your business hours? I tried calling support at 9pm ET on a Tuesday but nobody answered.",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-02",
+        "ticket_text": "Do you have an office in Chicago? I'd like to visit in person to discuss an enterprise deal. What's the address?",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-03",
+        "ticket_text": "Can you tell me what features are included in Acme Workspace? I'm evaluating it against Notion and want to know about real-time collaboration and integrations.",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-04",
+        "ticket_text": "I'd like to request a copy of all my personal data under your privacy policy. How do I submit a data export request?",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-05",
+        "ticket_text": "What are the system requirements for the desktop app? I'm running Windows 10 with 4GB RAM and want to make sure it'll work before installing.",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-06",
+        "ticket_text": "I'm interested in the Enterprise plan for my company of 200 employees. Do you offer custom pricing and what's included that Professional doesn't have?",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-07",
+        "ticket_text": "Does your product support screen readers? We have team members who use NVDA and VoiceOver and need WCAG 2.1 compliance.",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-08",
+        "ticket_text": "Are you open on Memorial Day? I see you list holiday closures but I'm not sure if support is completely unavailable or just reduced hours.",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-09",
+        "ticket_text": "What's the fastest way to reach a human? I've tried email but the 24-hour response time is too slow for my issue. Do you have live chat or phone support?",
+        "expected_category": "general"
+    },
+    {
+        "id": "general-10",
+        "ticket_text": "I just signed up and I'm totally lost. Where do I start? Is there a getting started guide or onboarding tutorial for new users?",
+        "expected_category": "general"
+    }
+]
