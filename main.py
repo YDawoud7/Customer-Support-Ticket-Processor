@@ -43,8 +43,8 @@ def _handle_confidence_interrupt(interrupt_info):
 def _handle_quality_interrupt(interrupt_info):
     """Handle a quality gate interrupt — ask user to approve or revise."""
     print(f"\n  ** QUALITY CHECK FLAGGED — HUMAN REVIEW NEEDED **")
-    print(f"  Feedback: {interrupt_info['quality_feedback']}")
-    print(f"  Draft response: {interrupt_info['draft_response'][:200]}...")
+    print(f"  Feedback: {interrupt_info['quality_feedback']}\n")
+    print(f"  Draft response: {interrupt_info['draft_response']}...")
 
     choice = input("  Type 'approve' to accept, or enter a revised response: ").strip()
     return choice if choice else "approve"
