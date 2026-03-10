@@ -20,7 +20,11 @@ def create_classifier(model_name: str = "claude-sonnet-4-20250514"):
     (after load_dotenv), not at import time.
     """
     model = create_chat_model(model_name)
-    structured_model = model.with_structured_output(TicketClassification)
+    if model_name.startswith('deepseek'):
+        # The default method 'json-schema' doesn't work with Deepseek, so we switch to function calling
+        structured_model = model.with_structured_output(TicketClassification, method='function_calling')
+    else:
+        structured_model = model.with_structured_output(TicketClassification)
 
     def classifier_node(state: TicketState) -> dict:
         result: TicketClassification = structured_model.invoke(

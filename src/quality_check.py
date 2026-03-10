@@ -18,7 +18,11 @@ QUALITY_CHECK_SYSTEM_PROMPT = (
 def create_quality_check(model_name: str = "claude-sonnet-4-20250514"):
     """Factory that returns a quality check node function."""
     model = create_chat_model(model_name)
-    structured_model = model.with_structured_output(QualityAssessment)
+    if model_name.startswith("deepseek"):
+        # The default method 'json-schema' doesn't work with Deepseek, so we switch to function calling
+        structured_model = model.with_structured_output(QualityAssessment, method='function_calling')
+    else:
+        structured_model = model.with_structured_output(QualityAssessment)
 
     def quality_check_node(state: TicketState) -> dict:
         review_prompt = (
