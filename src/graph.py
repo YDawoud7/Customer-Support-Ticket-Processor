@@ -4,8 +4,15 @@ from src.agents import create_billing_agent, create_general_agent, create_techni
 from src.classifier import create_classifier
 from src.confidence_gate import confidence_gate
 from src.quality_check import create_quality_check
+from src.quality_gate import quality_gate
 from src.state import TicketState
-from src.vector_store import get_retriever
+from src.tools.calculator import calculator
+from src.tools.code_analysis import analyze_code
+from src.tools.search import (
+    create_search_billing_docs,
+    create_search_general_docs,
+    create_search_technical_docs,
+)
 
 
 def route_by_category(state: TicketState) -> str:
@@ -18,10 +25,11 @@ def build_graph(classifier_model: str = "claude-sonnet-4-20250514", checkpointer
 
     Graph flow:
         START → classifier → confidence_gate → (billing | technical | general)
-              → quality_check → END
+              → quality_check → quality_gate → END
     """
-    billing_retriever = get_retriever("billing_docs")
-    technical_retriever = get_retriever("technical_docs")
+    billing_tools = [create_search_billing_docs(), calculator]
+    technical_tools = [create_search_technical_docs(), analyze_code]
+    general_tools = [create_search_general_docs()]
 
     graph = StateGraph(TicketState)
 
@@ -29,16 +37,18 @@ def build_graph(classifier_model: str = "claude-sonnet-4-20250514", checkpointer
     graph.add_node("confidence_gate", confidence_gate)
     graph.add_node(
         "billing",
-        create_billing_agent(model_name=classifier_model, retriever=billing_retriever),
+        create_billing_agent(model_name=classifier_model, tools=billing_tools),
     )
     graph.add_node(
         "technical",
-        create_technical_agent(
-            model_name=classifier_model, retriever=technical_retriever
-        ),
+        create_technical_agent(model_name=classifier_model, tools=technical_tools),
     )
-    graph.add_node("general", create_general_agent(model_name=classifier_model))
+    graph.add_node(
+        "general",
+        create_general_agent(model_name=classifier_model, tools=general_tools),
+    )
     graph.add_node("quality_check", create_quality_check(model_name=classifier_model))
+    graph.add_node("quality_gate", quality_gate)
 
     graph.add_edge(START, "classifier")
     graph.add_edge("classifier", "confidence_gate")
@@ -50,6 +60,7 @@ def build_graph(classifier_model: str = "claude-sonnet-4-20250514", checkpointer
     graph.add_edge("billing", "quality_check")
     graph.add_edge("technical", "quality_check")
     graph.add_edge("general", "quality_check")
-    graph.add_edge("quality_check", END)
+    graph.add_edge("quality_check", "quality_gate")
+    graph.add_edge("quality_gate", END)
 
     return graph.compile(checkpointer=checkpointer)

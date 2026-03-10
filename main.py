@@ -26,28 +26,47 @@ INITIAL_STATE = {
 }
 
 
+def _handle_confidence_interrupt(interrupt_info):
+    """Handle a confidence gate interrupt — ask user to confirm/override category."""
+    print(f"\n  ** LOW CONFIDENCE — HUMAN REVIEW NEEDED **")
+    print(f"  {interrupt_info['message']}")
+    print(f"  Current category: {interrupt_info['current_category']}")
+    print(f"  Reasoning: {interrupt_info['reasoning']}")
+
+    choice = input(f"  Enter category {interrupt_info['options']}: ").strip()
+    if choice not in ("billing", "technical", "general"):
+        choice = interrupt_info["current_category"]
+        print(f"  Invalid input, accepting: {choice}")
+    return choice
+
+
+def _handle_quality_interrupt(interrupt_info):
+    """Handle a quality gate interrupt — ask user to approve or revise."""
+    print(f"\n  ** QUALITY CHECK FLAGGED — HUMAN REVIEW NEEDED **")
+    print(f"  Feedback: {interrupt_info['quality_feedback']}")
+    print(f"  Draft response: {interrupt_info['draft_response'][:200]}...")
+
+    choice = input("  Type 'approve' to accept, or enter a revised response: ").strip()
+    return choice if choice else "approve"
+
+
 def process_ticket(app, ticket: str, thread_id: str):
-    """Process a single ticket, handling any interrupt for human review."""
+    """Process a single ticket, handling any interrupts for human review."""
     config = {"configurable": {"thread_id": thread_id}}
     state = {**INITIAL_STATE, "ticket_text": ticket}
 
     result = app.invoke(state, config=config)
 
-    # Check if the graph paused at an interrupt
     graph_state = app.get_state(config)
     while graph_state.tasks and any(
         hasattr(t, "interrupts") and t.interrupts for t in graph_state.tasks
     ):
         interrupt_info = graph_state.tasks[0].interrupts[0].value
-        print(f"\n  ** HUMAN REVIEW NEEDED **")
-        print(f"  {interrupt_info['message']}")
-        print(f"  Current category: {interrupt_info['current_category']}")
-        print(f"  Reasoning: {interrupt_info['reasoning']}")
 
-        choice = input(f"  Enter category {interrupt_info['options']}: ").strip()
-        if choice not in ("billing", "technical", "general"):
-            choice = interrupt_info["current_category"]
-            print(f"  Invalid input, accepting: {choice}")
+        if "current_category" in interrupt_info:
+            choice = _handle_confidence_interrupt(interrupt_info)
+        else:
+            choice = _handle_quality_interrupt(interrupt_info)
 
         result = app.invoke(Command(resume=choice), config=config)
         graph_state = app.get_state(config)
@@ -69,11 +88,11 @@ def main():
         print(f"Category:       {result['category']}")
         print(f"Confidence:     {result['confidence']:.2f}")
         print(f"Reasoning:      {result['reasoning']}")
-        print(f"Response:       {result['response'][:200]}...")
+        print(f"Response:       {result['response'][:300]}...")
         print(f"Quality:        {'Approved' if result['quality_approved'] else 'Needs revision'}")
-        print(f"QA Feedback:    {result['quality_feedback'][:150]}...")
+        print(f"QA Feedback:    {result['quality_feedback'][:200]}...")
         if result["retrieved_docs"]:
-            print(f"Retrieved Docs: {len(result['retrieved_docs'])} chunks used")
+            print(f"Tools used:     {result['retrieved_docs']}")
 
 
 if __name__ == "__main__":
