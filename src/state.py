@@ -14,6 +14,18 @@ class TicketState(TypedDict):
     confidence: float
     reasoning: str
     response: str
+    retrieved_docs: list[str]
+    quality_approved: bool
+    quality_feedback: str
+
+
+class QualityAssessment(BaseModel):
+    """Schema the quality check LLM must conform to via structured output."""
+
+    approved: bool = Field(..., description="Whether the response meets quality standards")
+    feedback: str = Field(
+        ..., description="Assessment of tone, completeness, and accuracy"
+    )
 
 
 class TicketClassification(BaseModel):

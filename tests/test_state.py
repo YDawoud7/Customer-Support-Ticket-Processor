@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.state import TicketClassification
+from src.state import QualityAssessment, TicketClassification
 
 
 class TestTicketClassification:
@@ -52,3 +52,18 @@ class TestTicketClassification:
             category="billing", confidence=1.0, reasoning="High confidence"
         )
         assert result.confidence == 1.0
+
+
+class TestQualityAssessment:
+    def test_approved_response(self):
+        result = QualityAssessment(approved=True, feedback="Response is thorough.")
+        assert result.approved is True
+        assert len(result.feedback) > 0
+
+    def test_rejected_response(self):
+        result = QualityAssessment(approved=False, feedback="Tone is too casual.")
+        assert result.approved is False
+
+    def test_requires_feedback(self):
+        with pytest.raises(ValidationError):
+            QualityAssessment(approved=True)

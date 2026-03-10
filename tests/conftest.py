@@ -12,6 +12,9 @@ def sample_state():
         "confidence": 0.0,
         "reasoning": "",
         "response": "",
+        "retrieved_docs": [],
+        "quality_approved": False,
+        "quality_feedback": "",
     }
 
 
