@@ -11,10 +11,20 @@ class TestLoadAndSplitDocuments:
         chunks = load_and_split_documents("data/technical_docs")
         assert len(chunks) > 0
 
-    def test_chunks_have_source_metadata(self):
+    def test_loads_general_docs(self):
+        chunks = load_and_split_documents("data/general_docs")
+        assert len(chunks) > 0
+
+    def test_chunks_have_full_metadata(self):
         chunks = load_and_split_documents("data/billing_docs")
+        for chunk in chunks:
+            assert "source" in chunk.metadata
+            assert "directory" in chunk.metadata
+            assert "start_index" in chunk.metadata
+            assert "chunk_index" in chunk.metadata
         sources = {c.metadata["source"] for c in chunks}
         assert "refund_policy.md" in sources
+        assert chunks[0].metadata["directory"] == "billing_docs"
 
     def test_chunks_are_within_size_limit(self):
         chunks = load_and_split_documents("data/billing_docs")

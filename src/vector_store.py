@@ -20,11 +20,24 @@ def load_and_split_documents(docs_dir: str) -> list[Document]:
     for md_file in sorted(docs_path.glob("*.md")):
         text = md_file.read_text()
         documents.append(
-            Document(page_content=text, metadata={"source": md_file.name})
+            Document(
+                page_content=text,
+                metadata={
+                    "source": md_file.name,
+                    "directory": docs_path.name,
+                },
+            )
         )
 
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    return splitter.split_documents(documents)
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=500, chunk_overlap=50, add_start_index=True
+    )
+    chunks = splitter.split_documents(documents)
+
+    for i, chunk in enumerate(chunks):
+        chunk.metadata["chunk_index"] = i
+
+    return chunks
 
 
 def build_vector_store(
