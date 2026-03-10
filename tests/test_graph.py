@@ -26,7 +26,7 @@ def _build_mocked_graph(category: str, confidence: float = 0.9, checkpointer=Non
 
     call_count = {"n": 0}
 
-    def chat_anthropic_factory(*args, **kwargs):
+    def chat_model_factory(*args, **kwargs):
         mock = MagicMock()
         call_count["n"] += 1
         n = call_count["n"]
@@ -53,9 +53,9 @@ def _build_mocked_graph(category: str, confidence: float = 0.9, checkpointer=Non
     mock_tool.name = "mock_tool"
 
     patches = [
-        patch("src.classifier.ChatAnthropic", side_effect=chat_anthropic_factory),
-        patch("src.agents.ChatAnthropic", side_effect=chat_anthropic_factory),
-        patch("src.quality_check.ChatAnthropic", side_effect=chat_anthropic_factory),
+        patch("src.classifier.create_chat_model", side_effect=chat_model_factory),
+        patch("src.agents.create_chat_model", side_effect=chat_model_factory),
+        patch("src.quality_check.create_chat_model", side_effect=chat_model_factory),
         patch("src.graph.create_search_billing_docs", return_value=mock_tool),
         patch("src.graph.create_search_technical_docs", return_value=mock_tool),
         patch("src.graph.create_search_general_docs", return_value=mock_tool),

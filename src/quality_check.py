@@ -1,6 +1,6 @@
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.models import create_chat_model
 from src.state import QualityAssessment, TicketState
 
 QUALITY_CHECK_SYSTEM_PROMPT = (
@@ -17,7 +17,7 @@ QUALITY_CHECK_SYSTEM_PROMPT = (
 
 def create_quality_check(model_name: str = "claude-sonnet-4-20250514"):
     """Factory that returns a quality check node function."""
-    model = ChatAnthropic(model=model_name)
+    model = create_chat_model(model_name)
     structured_model = model.with_structured_output(QualityAssessment)
 
     def quality_check_node(state: TicketState) -> dict:

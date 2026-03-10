@@ -13,7 +13,7 @@ class TestClassifierNode:
         mock_model = MagicMock()
         mock_model.with_structured_output.return_value = mock_structured
 
-        with patch("src.classifier.ChatAnthropic", return_value=mock_model):
+        with patch("src.classifier.create_chat_model", return_value=mock_model):
             node = create_classifier()
 
         return node

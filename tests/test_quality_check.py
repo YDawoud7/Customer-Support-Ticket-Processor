@@ -12,7 +12,7 @@ def _build_quality_check_with_mock(assessment: QualityAssessment):
     mock_model = MagicMock()
     mock_model.with_structured_output.return_value = mock_structured
 
-    with patch("src.quality_check.ChatAnthropic", return_value=mock_model):
+    with patch("src.quality_check.create_chat_model", return_value=mock_model):
         node = create_quality_check()
 
     return node

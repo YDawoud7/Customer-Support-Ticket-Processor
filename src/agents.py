@@ -1,6 +1,6 @@
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 
+from src.models import create_chat_model
 from src.state import TicketState
 
 MAX_TOOL_ROUNDS = 5
@@ -66,7 +66,7 @@ def _run_tool_calling_loop(model, tools, messages, max_rounds=MAX_TOOL_ROUNDS):
 
 def create_billing_agent(model_name: str = "claude-sonnet-4-20250514", tools=None):
     """Factory that returns a billing agent with tool-calling capabilities."""
-    model = ChatAnthropic(model=model_name)
+    model = create_chat_model(model_name)
     agent_tools = tools or []
     model_with_tools = model.bind_tools(agent_tools) if agent_tools else model
 
@@ -91,7 +91,7 @@ def create_billing_agent(model_name: str = "claude-sonnet-4-20250514", tools=Non
 
 def create_technical_agent(model_name: str = "claude-sonnet-4-20250514", tools=None):
     """Factory that returns a technical agent with tool-calling capabilities."""
-    model = ChatAnthropic(model=model_name)
+    model = create_chat_model(model_name)
     agent_tools = tools or []
     model_with_tools = model.bind_tools(agent_tools) if agent_tools else model
 
@@ -119,7 +119,7 @@ def create_technical_agent(model_name: str = "claude-sonnet-4-20250514", tools=N
 
 def create_general_agent(model_name: str = "claude-sonnet-4-20250514", tools=None):
     """Factory that returns a general agent with tool-calling capabilities."""
-    model = ChatAnthropic(model=model_name)
+    model = create_chat_model(model_name)
     agent_tools = tools or []
     model_with_tools = model.bind_tools(agent_tools) if agent_tools else model
 

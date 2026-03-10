@@ -71,7 +71,7 @@ class TestToolCallingLoop:
 class TestBillingAgent:
     def test_returns_response(self, sample_state):
         mock_model = _mock_model_direct_response("We'll process your refund.")
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_billing_agent(tools=[])
             result = agent(sample_state)
         assert result["response"] == "We'll process your refund."
@@ -82,7 +82,7 @@ class TestBillingAgent:
         mock_model = _mock_model_with_tool_call(
             "search_billing_docs", {"query": "refund"}, "30-day refund", "Your refund is eligible."
         )
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_billing_agent(tools=[tool])
             result = agent(sample_state)
         assert result["response"] == "Your refund is eligible."
@@ -92,7 +92,7 @@ class TestBillingAgent:
 class TestTechnicalAgent:
     def test_returns_response(self, sample_state):
         mock_model = _mock_model_direct_response("Clear your export cache.")
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_technical_agent(tools=[])
             sample_state["ticket_text"] = "Error 0x8007"
             result = agent(sample_state)
@@ -103,7 +103,7 @@ class TestTechnicalAgent:
         mock_model = _mock_model_with_tool_call(
             "search_technical_docs", {"query": "0x8007"}, "export failure", "Clear the cache."
         )
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_technical_agent(tools=[tool])
             result = agent(sample_state)
         assert result["response"] == "Clear the cache."
@@ -112,7 +112,7 @@ class TestTechnicalAgent:
 class TestGeneralAgent:
     def test_returns_response(self, sample_state):
         mock_model = _mock_model_direct_response("Hours are 9am-5pm.")
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_general_agent(tools=[])
             sample_state["ticket_text"] = "What are your hours?"
             result = agent(sample_state)
@@ -123,7 +123,7 @@ class TestGeneralAgent:
         mock_model = _mock_model_with_tool_call(
             "search_general_docs", {"query": "hours"}, "Mon-Fri 9am-5pm", "We're open Mon-Fri, 9am-5pm."
         )
-        with patch("src.agents.ChatAnthropic", return_value=mock_model):
+        with patch("src.agents.create_chat_model", return_value=mock_model):
             agent = create_general_agent(tools=[tool])
             result = agent(sample_state)
         assert result["response"] == "We're open Mon-Fri, 9am-5pm."

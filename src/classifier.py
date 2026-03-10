@@ -1,6 +1,6 @@
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.models import create_chat_model
 from src.state import TicketClassification, TicketState
 
 CLASSIFIER_SYSTEM_PROMPT = (
@@ -19,7 +19,7 @@ def create_classifier(model_name: str = "claude-sonnet-4-20250514"):
     Uses a factory so the LLM is only instantiated when the graph is built
     (after load_dotenv), not at import time.
     """
-    model = ChatAnthropic(model=model_name)
+    model = create_chat_model(model_name)
     structured_model = model.with_structured_output(TicketClassification)
 
     def classifier_node(state: TicketState) -> dict:
