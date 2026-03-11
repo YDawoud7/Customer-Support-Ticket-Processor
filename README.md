@@ -26,8 +26,8 @@ flowchart TD
     G -->|Flagged| H2[Human Review]
     H2 --> I
 
-    style H1 fill:#fbbf24,stroke:#d97706
-    style H2 fill:#fbbf24,stroke:#d97706
+    style H1 fill:#f87171,stroke:#dc2626,color:#fff
+    style H2 fill:#f87171,stroke:#dc2626,color:#fff
     style E1 fill:#60a5fa,stroke:#2563eb
     style E2 fill:#60a5fa,stroke:#2563eb
     style E3 fill:#60a5fa,stroke:#2563eb
