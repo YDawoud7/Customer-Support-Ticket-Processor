@@ -207,14 +207,17 @@ def stream_ticket(request: TicketRequest):
             "data": json.dumps({"thread_id": thread_id}),
         }
 
-        for node_name, update in graph_app.stream(state, config=config, stream_mode="updates"):
-            safe_update = {
-                k: v for k, v in update.items() if k != "messages"
-            }
-            yield {
-                "event": "node_update",
-                "data": json.dumps({"node": node_name, "update": safe_update}),
-            }
+        for chunk in graph_app.stream(state, config=config, stream_mode="updates"):
+            for node_name, update in chunk.items():
+                if not update:
+                    update = {}
+                safe_update = {
+                    k: v for k, v in update.items() if k != "messages"
+                }
+                yield {
+                    "event": "node_update",
+                    "data": json.dumps({"node": node_name, "update": safe_update}),
+                }
 
         graph_state = graph_app.get_state(config)
         interrupt = _check_interrupt(graph_state)
