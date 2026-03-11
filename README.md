@@ -15,8 +15,8 @@ flowchart TD
     C -->|High confidence| D{Route by Category}
     C -->|Low confidence| H1[Human Review]
     H1 --> D
-    D -->|billing| E1[Billing Agent + RAG]
-    D -->|technical| E2[Technical Agent + RAG]
+    D -->|billing| E1[Billing Agent + RAG + Calculator]
+    D -->|technical| E2[Technical Agent + RAG + Code Analysis]
     D -->|general| E3[General Agent + RAG]
     E1 --> F[Quality Check]
     E2 --> F
