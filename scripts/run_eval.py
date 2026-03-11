@@ -7,9 +7,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_core.callbacks import BaseCallbackHandler
-from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 
+from src.checkpointer import get_checkpointer
 from src.graph import build_graph
 from src.models import PRESET_CONFIGS
 
@@ -88,7 +88,7 @@ def run_ticket(app, ticket, thread_id):
 def run_config_eval(config_name, model_config, tickets):
     """Run all tickets through a single model configuration."""
     print(f"\n--- Evaluating: {config_name} ---")
-    checkpointer = MemorySaver()
+    checkpointer = get_checkpointer()
     app = build_graph(model_config=model_config, checkpointer=checkpointer)
 
     results = []

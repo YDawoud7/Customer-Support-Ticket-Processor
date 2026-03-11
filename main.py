@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 
+from src.checkpointer import get_checkpointer
 from src.graph import build_graph
 
 SAMPLE_TICKETS = [
@@ -75,7 +75,7 @@ def process_ticket(app, ticket: str, thread_id: str):
 
 
 def main():
-    checkpointer = MemorySaver()
+    checkpointer = get_checkpointer()
     app = build_graph(checkpointer=checkpointer)
 
     for i, ticket in enumerate(SAMPLE_TICKETS):
